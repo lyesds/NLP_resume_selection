@@ -119,6 +119,7 @@ phrase_matcher.add("SKILL", [skill])
 
 path = r'C:\Users\HZU\Documents\AI_Becode\2021-08-30_NLP_resume_selection\files\pdf'
 resume_text = extract_text(path+'\\119.pdf')
+resume_text = resume_text.lower()
 
 doc = nlp(resume_text)
 matches = phrase_matcher(doc)
@@ -132,6 +133,11 @@ for match_id, start, end in matches:
 ##############################################################################
 
 ###                 professions
+
+##############################################################################
+##############################################################################
+##############################################################################
+
 import pandas as pd
 import numpy as np
 from pdfminer.high_level import extract_text
@@ -149,9 +155,6 @@ data_professions = data_professions.drop_duplicates()
 
 
 words = data_professions[0].tolist()
-
-
-
 
 # ##Loading an empty model
 # import spacy
@@ -178,33 +181,15 @@ resume_text = resume_text.lower()
 
 doc = nlp(resume_text)
 
-
 professions = [nlp.make_doc(text) for text in words]
-
-##############################################################################
-#
-#                   Using    phrase_matcher
-#
-##############################################################################
 
 phrase_matcher = PhraseMatcher(nlp.vocab)
 
-# phrase_matcher.add("COUNTRIES",None, *skill)
 phrase_matcher.add("PROFESS", None, *professions)
+# phrase_matcher.add("COUNTRIES",None, *skill)
 # phrase_matcher.add("PROFESS", *professions)
 
 matches = phrase_matcher(doc)
-##############################################################################
-#
-#                   Using    Matcher
-#
-##############################################################################
-from spacy.matcher import Matcher
-
-matcher = Matcher(nlp.vocab)
-matcher.add('PROFESS', [professions])
-matches = matcher(doc)
-
 
 job_list = []
 for match_id, start, end in matches:
@@ -215,8 +200,193 @@ for match_id, start, end in matches:
     # print(span.text)
 
 job_names = pd.DataFrame(job_list)
-
 job_names = job_names.drop_duplicates()
+##############################################################################
+##############################################################################
+##############################################################################
+
+###                 Universities
+#                           I need to add here another institutios name
+#                           'institution' 'school', 'etc'
+
+##############################################################################
+##############################################################################
+##############################################################################
+
+import pandas as pd
+import numpy as np
+from pdfminer.high_level import extract_text
+
+
+data_universities = pd.read_csv('utils/world_universities.csv', encoding = 'utf-8', header = None)
+data_universities = data_universities.drop([0,2], axis=1)
+data_universities[1] = data_universities[1].str.lower()
+
+words = data_universities[1].tolist()
+
+# ##Loading an empty model
+# import spacy
+# from spacy.tokens import Doc
+# from spacy.training import Example
+
+# nlp_skills = spacy.blank('en')
+# texto = nlp_skills(resume_text)
+# predict = Doc(nlp_skills.vocab, words = words, tags = tags)
+# nlp_text = nlp_skills(resume_text, )
+
+
+import spacy
+from spacy.matcher import PhraseMatcher
+
+nlp = spacy.load("en_core_web_sm")
+
+path = r'C:\Users\HZU\Documents\AI_Becode\2021-08-30_NLP_resume_selection\files\pdf'
+
+resume_text = extract_text(path+'\\0000.pdf')
+resume_text = resume_text.lower()
+
+# resume_text = "Work Experience Freelance Consultant (Remotely) Spin-Off Brainy Physics / 2019 Physics Department, Michigan Technological University •	Providing expert advices relate to lens manufacture and developing of new lenses models for the start-up creation. •	Helping with the Business model creation. Applications & Technical Manager Lambda-X, Belgium / 2015 – 2019 •	Conducted a data regression analysis of the relationship between company stocks to improve the quality of the products. •	Increased accessibility and usability of customer data by redesigning data visualization techniques to include statistical graphs and information graphics. •	Tracking multiple customer service metrics with customer service analysis, finding tendencies and later creating the correspondent solutions together with the team. •	The increase in the quality of the technical service create more fidelity by part of the customers generating sales from 2M to 3.5M annually. •	New protocols were created for the manufacturing of the devices and testing of the software •	Worked with a team of 5+ to ideate, create, maintain, and update new prototypes as results 6 new software were developed and 3 new devices are now in the market. Project Manager Visiometrics-CD6, Spain / 2010-2015 •	Ensure strict adherence to the ISO req. for each device create. •	Manage project budget of 1M+ and ensure company obtains the best possible pricing; determine and minimize risk. •	Ensure that the project team understand all aspects of the contract relating to their respective responsibilities. Researcher and support engineer Visiometrics-CD6, Spain / 2007-2009 •	Liaised between design, production, and quality teams to ensure highest standard of quality was being met during each stage of development; Created new protocol in the manufacturing process. •	Refined and improved existing documentation system, resulting in reduced labor costs via increased workplace efficiency."
+# resume_text = resume_text.lower()
+
+doc = nlp(resume_text)
+
+professions = [nlp.make_doc(text) for text in words]
+
+phrase_matcher = PhraseMatcher(nlp.vocab)
+
+phrase_matcher.add("PROFESS", None, *professions)
+# phrase_matcher.add("COUNTRIES",None, *skill)
+# phrase_matcher.add("PROFESS", *professions)
+
+matches = phrase_matcher(doc)
+
+studies_places_list = []
+for match_id, start, end in matches:
+    string_id = nlp.vocab.strings[match_id]
+    span = doc[start:end]
+    studies_places_list.append(span.text)    
+    # print(match_id, string_id, start, end, span.text)
+    # print(span.text)
+
+studies_places_names = pd.DataFrame(studies_places_list)
+studies_places_names = studies_places_names.drop_duplicates()
+##############################################################################
+##############################################################################
+##############################################################################
+
+###                 Languages WORKING PERFECT !!!
+
+##############################################################################
+##############################################################################
+##############################################################################
+
+import pandas as pd
+import numpy as np
+from pdfminer.high_level import extract_text
+
+data_languages = pd.read_csv('utils/languages.csv', encoding = 'utf-8', header = None)
+data_languages[0] = data_languages[0].str.lower()
+
+words = data_languages[0].tolist()
+
+# ##Loading an empty model
+# import spacy
+# from spacy.tokens import Doc
+# from spacy.training import Example
+
+# nlp_skills = spacy.blank('en')
+# texto = nlp_skills(resume_text)
+# predict = Doc(nlp_skills.vocab, words = words, tags = tags)
+# nlp_text = nlp_skills(resume_text, )
+
+
+import spacy
+from spacy.matcher import PhraseMatcher
+
+nlp = spacy.load("en_core_web_sm")
+
+path = r'C:\Users\HZU\Documents\AI_Becode\2021-08-30_NLP_resume_selection\files\pdf'
+
+resume_text = extract_text(path+'\\1456.pdf')
+resume_text = resume_text.lower()
+
+doc = nlp(resume_text)
+
+professions = [nlp.make_doc(text) for text in words]
+
+phrase_matcher = PhraseMatcher(nlp.vocab)
+
+phrase_matcher.add("PROFESS", None, *professions)
+# phrase_matcher.add("COUNTRIES",None, *skill)
+# phrase_matcher.add("PROFESS", *professions)
+
+matches = phrase_matcher(doc)
+
+languages_list = []
+for match_id, start, end in matches:
+    string_id = nlp.vocab.strings[match_id]
+    span = doc[start:end]
+    languages_list.append(span.text)    
+    # print(match_id, string_id, start, end, span.text)
+    # print(span.text)
+
+if len(languages_list)==0:
+    languages_list = ['English'] #Example 1456
+
+languages_names = pd.DataFrame(languages_list)
+languages_names = languages_names.drop_duplicates()
+##############################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
