@@ -13,7 +13,7 @@ def extract_text_from_pdf(filenumber: str, path='./pdf/'):
 # testing other outputs... not working
 # tags = extract_text_to_fp(inf=path+filenum+'.pdf', outfp='tags.txt', output_type='tag')
 
-# print(extract_text_from_pdf(filenumber='1', path='./pdf/'))
+print(extract_text_from_pdf(filenumber='1', path='./pdf/'))
 
 
 datapath = './pdf_lite/'
@@ -30,4 +30,4 @@ def build_dictionnary():
     return dict(zip(ids, datas))
 
 
-print(build_dictionnary())
+# print(build_dictionnary())
