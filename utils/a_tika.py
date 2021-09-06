@@ -13,19 +13,22 @@ def extract_text_from_pdf(filenumber: str, path='./pdf/'):
     """
     res_tika = parser.from_file(path+filenumber+'.pdf')  # dictionary
     res = res_tika['content']
-    res = res.replace(' \n', '')
-    res = res.strip()
-    res = res.split('\n')
-    res_=[]
-    for i in res:
-        i = re.sub(' +', ' ', i)
-        i = i.strip()
-        res_.append(i)
-    return res_
+    try:
+        res = res.replace(' \n', '')
+        res = res.strip()
+        res = res.split('\n')
+        res_=[]
+        for i in res:
+            i = re.sub(' +', ' ', i)
+            i = i.strip()
+            res_.append(i)
+        return res_
+    except AttributeError:
+        next
 
 
-'''file = '2'
-print(extract_text_from_pdf(filenumber=file, path='./pdf/'))'''
+'''file = '1321'
+print(extract_text_from_pdf(filenumber=file, path='./corrupted/'))'''
 
 '''
 # print(extract_text_from_pdf(filenumber=file, path='./pdf/').keys())
@@ -120,7 +123,7 @@ def sections(filenumber: str, path='./pdf/'):
             lang.append(i)
     return name, email, phone, address, hobby, experience, educ, skills, lang, pdftext
 
-file = '1'
+'''file = '1'
 #print(extract_text_from_pdf(filenumber=file, path='./pdf/'))
 result = sections(filenumber=file)
 print(result[0], len(result[0]))
@@ -128,10 +131,10 @@ print(result[1], len(result[1]))
 print(result[2], len(result[2]))
 print(result[3], len(result[3]))
 print(result[5], len(result[5]))
-print(result[-1], len(result[-1]))
+print(result[-1], len(result[-1]))'''
 
 
-datapath = './pdf_lite/'
+datapath = './pdf/'
 def build_dictionnary():
     df = pd.DataFrame(columns=["id", "name", "email", "phone", "address", "hobby", "experience", "educ", "skills", "lang", "pdftext"])
     ids = []
@@ -141,9 +144,13 @@ def build_dictionnary():
             id = filename[:-4]
             ids.append(id)
             data_ = []
+            print(id)
             for i in range(10):
-                data = sections(filenumber=id, path=datapath)[i]
-                data_.append(data)
+                try:
+                    data = sections(filenumber=id, path=datapath)[i]
+                    data_.append(data)
+                except AttributeError or TypeError:
+                    next
             #datas.append(data_)
             #print(data_)
             #print(datas[0][0], len(data_))
@@ -158,6 +165,6 @@ def build_dictionnary():
         df.loc[len(df)] = dfrow
     return df
 
-df_100files = build_dictionnary()
-print(df_100files.tail().to_markdown())
-df_100files.to_csv('./assets/df_100files.csv',sep=',', index=False, mode='w')
+df_all_files = build_dictionnary()
+#print(df_100files.tail().to_markdown())'''
+df_all_files.to_csv('./assets/df_all_files.csv', sep=',', index=False, mode='w')
