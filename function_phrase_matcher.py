@@ -40,6 +40,7 @@ hobbies_words = hobbies[0].tolist()
 
 ## CSV CV data
 resumes = pd.read_csv('df_100files.csv', encoding = 'utf-8')
+resumes = resumes.astype(str)
 
 # load pre-trained model
 nlp = spacy.load('en_core_web_sm')
@@ -70,21 +71,5 @@ def extract_name(col_names):
         else:
             return all_names[i]
 
-        
-#example for only one row
-aaaaaaaaaaaaaaaa = extract_name(resumes['pdftext'][16])
-
-#1st version to apply to all the column name, I need to change to str all the rows also change nan.
 resumes['name'] = resumes['name'].apply(lambda x: extract_name(x))
-
-
-
-
-
-
-
-
-
-
-
 
