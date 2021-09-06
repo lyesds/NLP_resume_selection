@@ -47,8 +47,6 @@ nlp = spacy.load('en_core_web_sm')
 # initialize matcher with a vocab
 matcher = Matcher(nlp.vocab)
 
-nlp_text = nlp(resumes['name'][15])
-
 def extract_name(col_names):
     all_names = []
     nlp_text = nlp(col_names)
@@ -72,17 +70,12 @@ def extract_name(col_names):
         else:
             return all_names[i]
 
-
-resumes['name'] 
-resumes['name'] = resumes['name'].apply(lambda x: extract_name(x))
-
-
-
-
-
+        
+#example for only one row
 aaaaaaaaaaaaaaaa = extract_name(resumes['pdftext'][16])
 
-
+#1st version to apply to all the column name, I need to change to str all the rows also change nan.
+resumes['name'] = resumes['name'].apply(lambda x: extract_name(x))
 
 
 
