@@ -72,10 +72,12 @@ for i in range(len(resumes)):
 
 resumes['name2'] = np.where(resumes['name'] == 'NOVALUE', resumes['pdftext'].str[:250], resumes['name'])
 resumes['address2'] = np.where(resumes['address'] == 'NOVALUE', resumes['pdftext'].str[:250], resumes['address'])
+resumes['phone2'] = np.where(resumes['phone'] == 'NOVALUE', resumes['pdftext'], resumes['phone'])
 
 resumes = resumes.astype(str)
 resumes['name2'] = resumes['name2'].str.lower()
 resumes['address2'] = resumes['address2'].str.lower()
+resumes['phone2'] = resumes['phone2'].str.lower()
 resumes['id'] = resumes['id'].astype(int)
 
 #Function to extrac the names from resumes['name']
@@ -140,7 +142,23 @@ def get_email_addresses(var):
         return 'no email'
 
 
-resumes['email_regex'] = resumes['email'].apply(lambda x: get_email_addresses(x))
-email = resumes[['id', 'email_regex']]
+'''resumes['email_regex'] = resumes['email'].apply(lambda x: get_email_addresses(x))
+email = resumes[['id', 'phone', 'email_regex']]
 print(email.info())
-print(email.head(30).to_markdown())
+print(email.head(30).to_markdown())'''
+
+
+def get_phone(var):
+    r = re.compile(r"(\+91)?\s*?(\d{8,10})")
+    res = r.findall(str(var))
+    if len(res) > 0:
+        out = res[0]
+        out = '-'.join(out)
+    else:
+        out = 'no phone'
+    return out
+
+resumes['phone_regex'] = resumes['phone2'].apply(lambda x: get_phone(x))
+phones = resumes[['id', 'phone_regex', 'phone']]
+print(phones.info())
+print(phones.tail(30).to_markdown())
