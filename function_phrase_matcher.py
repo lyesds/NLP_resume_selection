@@ -107,8 +107,9 @@ def extract_name(col_names):
         else:
             return all_names[i]
 
-resumes['name'] = resumes['name'].apply(lambda x: extract_name(x))
-
+resumes['new_name'] = 'NONVALUE'
+resumes['new_name'] = resumes['name'].apply(lambda x: extract_name(x))
+#reorgineze the order
 
 #Function to extract the city from address
 def extract_location(col_address):
