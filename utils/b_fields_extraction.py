@@ -58,18 +58,6 @@ resumes = resumes.sort_values(by=['id'])
 resumes = resumes.reset_index(drop=True)
 
 
-"""#The pdf umber 11 is not getting the correct data
-for i in range(len(resumes)):
-    while resumes['name'][i] == 'NOVALUE':
-        str_text = resumes['pdftext'][i]
-        resumes['name'][i] =  str_text[:250]
-    while resumes['address'][i] == 'NOVALUE':
-        str_text = resumes['pdftext'][i]
-        resumes['address'][i] =  str_text[:250]
-    else:
-        next
-"""
-
 resumes['name2'] = np.where(resumes['name'] == 'NOVALUE', resumes['pdftext'].str[:250], resumes['name'])
 resumes['address2'] = np.where(resumes['address'] == 'NOVALUE', resumes['pdftext'].str[:250], resumes['address'])
 resumes['phone2'] = np.where(resumes['phone'] == 'NOVALUE', resumes['pdftext'], resumes['phone'])
@@ -158,7 +146,41 @@ def get_phone(var):
         out = 'no phone'
     return out
 
-resumes['phone_regex'] = resumes['phone2'].apply(lambda x: get_phone(x))
+'''resumes['phone_regex'] = resumes['phone2'].apply(lambda x: get_phone(x))
 phones = resumes[['id', 'phone_regex', 'phone']]
 print(phones.info())
-print(phones.tail(30).to_markdown())
+print(phones.tail(30).to_markdown())'''
+
+
+## Function to extract work experience
+##  CSV job titles to list
+job_titles = pd.read_csv('./utils/jobs_titles.csv', encoding='utf-8', header=None)
+job_titles[0] = job_titles[0].str.lower()
+job_titles_words = job_titles[0].tolist()
+job_titles = [nlp.make_doc(text) for text in job_titles_words]
+
+
+def extract_work_experience(var):
+
+    doc = nlp(var)
+    phrase_matcher_job_titles = PhraseMatcher(nlp.vocab)
+    phrase_matcher_job_titles.add("JOB_TITLE", None, *job_titles)
+    matches_job_titles = phrase_matcher_job_titles(doc)
+
+    job_titles_list = []
+    for match_id, start, end in matches_job_titles:
+        string_id = nlp.vocab.strings[match_id]
+        span = doc[start:end]
+        job_titles_list.append(span.text)
+    if len(job_titles_list) > 0:
+        #return job_titles_list
+        return list(set(job_titles_list))
+    else:
+        #return ['This person do not have listed work experience']
+        return None
+
+resumes = pd.read_csv('./assets/df_100files.csv', encoding = 'utf-8')
+resumes['experience2'] = resumes['pdftext'].apply(lambda x: extract_work_experience(x))
+experience = resumes[['id', 'experience2', 'experience']]
+print(experience.info())
+print(experience.tail(20).to_markdown())
