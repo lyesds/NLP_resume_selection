@@ -65,5 +65,5 @@ $ streamlit run streamlit_app.py.py
 ---
 > GitHub [@harozudu](https://github.com/harozudu) + [@lyesds](https://github.com/lyesds)
 >
-> LinkedIn [@harold](https://www.linkedin.com/in/harold-zd/) + [@lyes](https://www.linkedin.com/in/lyes-rouabah)
+> LinkedIn [[@lyes](https://www.linkedin.com/in/lyes-rouabah)
 
