@@ -41,7 +41,6 @@ with col_mid:
     if refresh_plot:    
         plt_ten, ten_cv_selected= tf_idf(data, filenumber=cv_color, subsetoption=True, filteringsection='academic_titles', similaritysection='work_experience2', scattersection='hobbies')
         st.pyplot(plt_ten)
-        var_1 = ten_cv_selected[0]
 
 col_mid, col1, col_mid, col3, col_mid = st.beta_columns((0.7, 2, 0.1, 2, 0.7))
 with col1:
@@ -61,7 +60,6 @@ with col3:
     refresh_net_cv_1_2 = st.button('refresh', key='key2')    
     if refresh_net_cv_1_2:
         ten_cv_selected= tf_idf_list(data, filenumber=cv_color, subsetoption=True, filteringsection='academic_titles', similaritysection='work_experience2', scattersection='hobbies')
-        st.write(var_1)
         data_nodes_cv_1_2, academic_titles_list_cv_1_2, work_experience_list_cv_1_2 = get_branchs_linked_to_many_persons(data, [cv_color, var_1])    
         plot_cv_1_2 = get_network_plot([cv_color, var_1], data_nodes_cv_1_2, academic_titles_list_cv_1_2, work_experience_list_cv_1_2)    
         st.pyplot(plot_cv_1_2)
