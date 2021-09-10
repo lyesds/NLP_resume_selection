@@ -4,7 +4,6 @@ import pandas as pd
 from utils.phase_3_plot_df import get_cv_selected, get_branchs_linked_to_person, get_branchs_linked_to_many_persons, get_network_plot
 from utils.c_similarity_between_cvs import tf_idf, tf_idf_list
 
-var1=[]
 data = pd.read_csv('utils/super_cleaned_df.csv')
 data = data.drop(columns=['name', 'email', 'pdftext', 'location'])
 pdf_list = data['id'].tolist()
