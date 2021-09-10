@@ -4,8 +4,8 @@ import pandas as pd
 from utils.phase_3_plot_df import get_cv_selected, get_branchs_linked_to_person, get_branchs_linked_to_many_persons, get_network_plot
 from utils.c_similarity_between_cvs import tf_idf, tf_idf_list
 
-data = pd.read_csv('super_cleaned_df.csv')
-data = data.drop(columns=['name', 'email', 'pdftext', 'location'])
+data = pd.read_csv('utils/super_cleaned_df.csv')
+data = data.drop(columns=['email', 'pdftext', 'location'])
 pdf_list = data['id'].tolist()
 
 st.set_page_config(layout='wide')
@@ -39,7 +39,7 @@ col1, col_mid, col2 = st.beta_columns((1, 1, 1))
 with col_mid:
     refresh_plot = st.button('refresh', key='key0')    
     if refresh_plot:    
-        plt_ten, ten_cv_selected= tf_idf(data, filenumber=cv_color, subsetoption=True, filteringsection='academic_titles', similaritysection='work_experience2', scattersection='hobbies')
+        plt_ten, ten_cv_selected= tf_idf(data, filenumber=cv_color, subsetoption=False, filteringsection='academic_titles', similaritysection='work_experience2', scattersection='hobbies')
         st.pyplot(plt_ten)
 
 col_mid, col1, col_mid, col3, col_mid = st.beta_columns((0.7, 2, 0.1, 2, 0.7))
@@ -59,9 +59,9 @@ with col3:
     st.subheader('This is the network for the CV selected and the firts similar CV:')
     refresh_net_cv_1_2 = st.button('refresh', key='key2')    
     if refresh_net_cv_1_2:
-        ten_cv_selected= tf_idf_list(data, filenumber=cv_color, subsetoption=True, filteringsection='academic_titles', similaritysection='work_experience2', scattersection='hobbies')
-        data_nodes_cv_1_2, academic_titles_list_cv_1_2, work_experience_list_cv_1_2 = get_branchs_linked_to_many_persons(data, [cv_color, var_1])    
-        plot_cv_1_2 = get_network_plot([cv_color, var_1], data_nodes_cv_1_2, academic_titles_list_cv_1_2, work_experience_list_cv_1_2)    
+        ten_cv_selected= tf_idf_list(data, filenumber=cv_color, subsetoption=False, filteringsection='academic_titles', similaritysection='work_experience2', scattersection='hobbies')
+        data_nodes_cv_1_2, academic_titles_list_cv_1_2, work_experience_list_cv_1_2 = get_branchs_linked_to_many_persons(data, [cv_color, ten_cv_selected[0]])    
+        plot_cv_1_2 = get_network_plot([cv_color, ten_cv_selected[0]], data_nodes_cv_1_2, academic_titles_list_cv_1_2, work_experience_list_cv_1_2)    
         st.pyplot(plot_cv_1_2)
 
 st.markdown('---------')
