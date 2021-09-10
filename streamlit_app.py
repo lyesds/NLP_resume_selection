@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Fri Sep 10 08:52:16 2021
-
-@author: HZU
-"""
 import streamlit as st
 import pandas as pd
 from utils.phase_3_plot_df import get_cv_selected, get_branchs_linked_to_person, get_branchs_linked_to_many_persons, get_network_plot
