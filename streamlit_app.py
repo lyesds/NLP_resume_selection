@@ -10,7 +10,12 @@ pdf_list = data['id'].tolist()
 
 st.set_page_config(layout='wide')
 
-st.title('NLP resume selection ')
+st.image('./images/logo_CV_matcher.png')
+st.title('Extract and cluster information from a free-format resume')
+st.markdown("Welcome to this dashboard for information extraction and matching of free-format resumes!")
+st.write('\n ')
+st.markdown("Data courtesy of [arefinnomi@github](https://github.com/arefinnomi/curriculum_vitae_data).")
+
 
 st.markdown('---------')
 st.header('CV selection')
@@ -22,8 +27,8 @@ with col_mid:
     cv_color = st.text_input("Please input the CV_id number", cv_color)
     cv_color = int(cv_color)
 st.markdown('---------')
-st.header('Data extraction')
-st.subheader('Here you can visualize the information from the CV selected or CV-pdf file.')
+st.header('Information extraction')
+st.subheader('The table hereby shows the information extracted from the selected CV.')
 st.write('\n')
 st.write('\n')
 st.write('\n')
