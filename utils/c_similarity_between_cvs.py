@@ -7,15 +7,15 @@ import seaborn as sns
 
 plt.style.use('seaborn-bright')
 
-resumes = pd.read_csv('./assets/super_cleaned_df.csv', encoding = 'utf-8')
-resumes['work_experience2'] = resumes['work_experience'].str.replace(' ', '')
+# resumes = pd.read_csv('./assets/super_cleaned_df.csv', encoding = 'utf-8')
+
 # print(resumes.columns)
 # print(resumes[resumes['id'] == 915].index[0])
 # resumes.iloc[2, 8] = 'human/resource, learner'
-#print(resumes.iloc[901:910].head().to_markdown())
+# print(resumes.iloc[901:910].head().to_markdown())
 
-def tf_idf(filenumber: int, subsetoption, filteringsection: str, similaritysection: str, scattersection: str):
-
+def tf_idf(resumes, filenumber: int, subsetoption, filteringsection: str, similaritysection: str, scattersection: str):
+    resumes['work_experience2'] = resumes['work_experience'].str.replace(' ', '')
     filteringsection_list = resumes[filteringsection][resumes['id'] == filenumber].values
     filteringsection_string = filteringsection_list[0].replace(',', '')
     filteringsection_string = filteringsection_string.replace('in ', '')
@@ -92,5 +92,5 @@ def tf_idf(filenumber: int, subsetoption, filteringsection: str, similaritysecti
     return fig, closest_cvs_filenumber  # the functions returns 1) the scatter plot and 2) the list of the 10 closest CVs
 
 
-print(tf_idf(filenumber=915, subsetoption=True, filteringsection='academic_titles', similaritysection='work_experience2', scattersection='hobbies'))
-print(tf_idf(filenumber=915, subsetoption=False, filteringsection='academic_titles', similaritysection='work_experience2', scattersection='hobbies'))
+#print(tf_idf(filenumber=915, subsetoption=True, filteringsection='academic_titles', similaritysection='work_experience2', scattersection='hobbies'))
+#print(tf_idf(filenumber=915, subsetoption=False, filteringsection='academic_titles', similaritysection='work_experience2', scattersection='hobbies'))
